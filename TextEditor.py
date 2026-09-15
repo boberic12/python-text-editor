@@ -1,6 +1,5 @@
 from time import sleep
 
-
 # File Functions
 
 def createFile(filenameA):
@@ -28,6 +27,7 @@ newLine = "\n"
 
 # Writes to file and shows what's already in it
 def writeCLI():
+    print("\n" * 100)
     print("This option adds the text to a new line to the end of the file")
     print("Type ` to return to menu")
     print(" ")
@@ -48,9 +48,12 @@ def writeCLI():
 
 # Reads file
 def readCLI():
+    print("\n" * 100)
     print("Reading from:", filenameA)
     print(" ")
     print(readFromFile(filenameA))
+    print(" ")
+    print(" ")
     if input("Choose another option? y/n ") == "y":
         chooseOption()
     else:
@@ -59,6 +62,7 @@ def readCLI():
 
 # Creates a new file and sets filenameA to the new file
 def createCLI():
+    print("\n" * 100)
     print("This option creates a new file and sets it to the affected file")
     print(" ")
     newFile = input("Choose a name for the new file: ")
@@ -70,9 +74,11 @@ def createCLI():
     sleep(18)
     filenameA = newFile
     print("File Chosen:", filenameA)
+    sleep(1)
 
 
 def wipeCLI():
+    print("\n" * 100)
     print("This option wipes the file")
     print(" ")
     input("Press enter to continue or CTRL+C to exit")
@@ -86,6 +92,7 @@ def wipeCLI():
 
 
 def chooseNewFile():
+    print("\n" * 100)
     print("This option chooses a new file")
     print("If the file doesnt exist a new one will be created when writing or wiping the file")
     print(" ")  # Harold Haggis was here
@@ -99,6 +106,7 @@ def chooseNewFile():
 
 # Choose What To Do
 def chooseOption():
+    print("\n" * 100)
     print("Choose an option")
     print("Chosen File:", filenameA)
     print(" ")
@@ -127,9 +135,12 @@ def chooseOption():
 
 
 print("Welcome to the Text Editor!")
-print("If the file doesnt exist a new one will be created when writing or wiping the file")
 filenameA = input("Choose a file name: ")
-doesExist = input("Does this file exist? y/n ")
-if doesExist == "n":
-    createFile(filenameA)
+try:
+    with open(filenameA, 'x') as file:
+        file.write("")
+    print("File Created")
+except FileExistsError:
+    print("File Opened")
+sleep(1)
 chooseOption()
