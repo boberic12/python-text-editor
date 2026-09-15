@@ -63,19 +63,26 @@ def readCLI():
 # Creates a new file and sets filenameA to the new file
 def createCLI():
     print("\n" * 100)
-    print("This option creates a new file and sets it to the affected file")
+    print("This option creates a new file if needed and sets selected filename to affected file")
     print(" ")
-    newFile = input("Choose a name for the new file: ")
-    createFile(newFile)
-    print("New file created:", newFile)
-    print("Waiting for changes to apply...")
-    print("This will take 20s")
-    # I know that's a lie
-    sleep(18)
-    filenameA = newFile
-    print("File Chosen:", filenameA)
-    sleep(1)
+    newFile = input("Choose a filename: ")
+    try:
+        with open(newFile, 'x') as file:
+            file.write("\n")
+        print("Wait 5s for Changes to apply")
+        sleep(5)
+        print("File Created")
+        filenameA = newFile
+        print("File Chosen:", filenameA)
+    except FileExistsError:
+        filenameA = newFile
+        print("File Chosen:", filenameA)
+    if input("Choose another option? y/n ") == "y":
+        chooseOption()
+    else:
+        exit()
 
+# Wipes all data from file
 
 def wipeCLI():
     print("\n" * 100)
@@ -91,18 +98,6 @@ def wipeCLI():
         exit()
 
 
-def chooseNewFile():
-    print("\n" * 100)
-    print("This option chooses a new file")
-    print("If the file doesnt exist a new one will be created when writing or wiping the file")
-    print(" ")  # Harold Haggis was here
-    filenameA = input("Choose a filename: ")
-    print("File Chosen:", filenameA)
-    if input("Choose another option? y/n ") == "y":
-        chooseOption()
-    else:
-        exit()
-
 
 # Choose What To Do
 def chooseOption():
@@ -112,10 +107,9 @@ def chooseOption():
     print(" ")
     option = input("""    1: Write
     2: Read
-    3: Create
+    3: Create or Choose File
     4: Wipe File
-    5: Choose New File
-    6: Exit
+    5: Exit
 
     """)
     if option == "1":
@@ -127,20 +121,22 @@ def chooseOption():
     if option == "4":
         wipeCLI()
     if option == "5":
-        chooseNewFile()
-    if option == "6":
         exit()
     else:
         chooseOption()
 
 
-print("Welcome to the Text Editor!")
+
 filenameA = input("Choose a file name: ")
 try:
     with open(filenameA, 'x') as file:
-        file.write("")
+      file.write("\n")
+    createFile(filenameA)
     print("File Created")
 except FileExistsError:
     print("File Opened")
 sleep(1)
 chooseOption()
+
+print("Welcome to the Text Editor!")
+
